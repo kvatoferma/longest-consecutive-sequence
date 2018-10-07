@@ -1,5 +1,6 @@
-// module.exports =
+module.exports =
 function longestConsecutiveLength(array) {
+
 
 const defaultSort = (a, b) => {
   return a - b;
@@ -17,37 +18,34 @@ Array.prototype.isEmpty = function() {
   return true && !(this.length > 0);
 }
 
-array.sort(defaultSort);
-const sequences = [];
-const countSequence = (array = [], sequence = []) => {
+const countSequence = (array, seq = [[], []]) => {
+  let sequence = seq[0];
+  let sequences = seq[1];
   const updateSequences = sequence => {
     sequences.push(sequence);
   }
+
   if (array.isEmpty()) {
-    return updateSequences(sequence);
+    return seq;
   }
-    if ((sequence.last() === array[0] + 1) || sequence.isEmpty()) {
-      sequence.push(array.shift());
-      countSequence(array, sequence);
-    } else {
-      sequence = []
-      countSequence(array, sequence);
-      return updateSequences(sequence);
-    }
 
+  let condition = sequence.last() === array[0] - 1 || sequence.isEmpty();
 
+  if (condition) {
+    sequence.push(array.shift());
+  } else {
+    if (sequence.length > 1) updateSequences(sequence);
+    sequence = [];
+  }
+  countSequence(array, [sequence, sequences]);
+  return sequences;
 }
-countSequence(array);
-sequences
-const lengths = sequences.map((sequence, i) => {
+
+const sequences = countSequence(array);
+sequences;
+const lengths = sequences.map(sequence => {
   return sequence.length;
 });
 
 return lengths.max();
 }
-
-
-
-const simpleArray = [100, 4, 200, 1, 3, 2];
-let res = longestConsecutiveLength(simpleArray);
-res
