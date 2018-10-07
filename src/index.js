@@ -20,54 +20,91 @@ Array.prototype.isEmpty = function() {
   return true && !(this.length > 0);
 }
 
+const max = (a, b) => {
+  return (a < b) ? b : a;
+}
+
 array.sort(defaultSort);
 
-const countSequence = (array, seq = [[],[]]) => {
-  let sequence = seq[0];
-  let sequences = seq[1];
+// let stack = [];
+const countLength = (array, stack = [], length = 0) => {
+  if (array.isEmpty()) return length;
+  stack.push(array.unshift());
+  if (array.isEmpty()) return stack.length;
 
-  const updateSequences = sequence => {
-    sequences.push(sequence);
+  if ((stack.last() + 1) !== array[0]) {
+    length = stack.length;
+    stack = [];
   }
-
-  if (array.isEmpty()) {
-    // sequence
-    return sequence;
-  }
-
-  // if (array.length === 1 && seq.isEmpty()) {
-    // return array[0];
-  // }
-
-  let condition = sequence.last() === array[0] - 1 || sequence.isEmpty();
-
-  if (condition) {
-    sequence.push(array.shift());
-  } else {
-    // updateSequences(sequence);
-    sequences.push(sequence);
-    sequence = [];
-  }
-  countSequence(array, [sequence, sequences]);
-  return sequences;
+  countLength(array, stack, length);
+  return length;
 }
-if (array.isEmpty()) return 0;
-if (array.length === 1) return 1;
-
-
-const sequences = countSequence(array);
-// sequences
-const lengths = sequences.map(sequence => {
-  return sequence.length;
-});
-// lengths
-
-return lengths.max();
+let length = 0;
+length = max(length, countLength(array));
+return length;
 }
+// for (let i = 0; i < length; i++) {
+  // stack.push(array[i]);
+  // stack
+  // if ((array[i+1] - array[i]) === 1) {
+    // stack.push(array[i]);
+  // } else {
+    // countLength = max(countLength, stack.length);
+    // countLength
+    // stack = [];
+
+const empty = [];
+const one = [36];
+const simple = [1,2,3,6,8,11,12,15];
+
+console.log(longestConsecutiveLength(one));
+
+// const countSequence = (array, seq = [[],[]]) => {
+//   let sequence = seq[0];
+//   let sequences = seq[1];
+//
+//   const updateSequences = sequence => {
+//     sequences.push(sequence);
+//   }
+//
+//   if (array.isEmpty()) {
+//     // sequence
+//     return sequence;
+//   }
+//
+//   // if (array.length === 1 && seq.isEmpty()) {
+//     // return array[0];
+//   // }
+//
+//   let condition = sequence.last() === array[0] - 1 || sequence.isEmpty();
+//
+//   if (condition) {
+//     sequence.push(array.shift());
+//   } else {
+//     // updateSequences(sequence);
+//     sequences.push(sequence);
+//     sequence = [];
+//   }
+//   countSequence(array, [sequence, sequences]);
+//   return sequences;
+// }
+// if (array.isEmpty()) return 0;
+// if (array.length === 1) return 1;
+//
+//
+// const sequences = countSequence(array);
+// // sequences
+// const lengths = sequences.map(sequence => {
+//   return sequence.length;
+// });
+// // lengths
+//
+// return lengths.max();
+// }
+//
 
 
-
-console.log(longestConsecutiveLength(longArray));
+// console.log(longestConsecutiveLength(longArray));
 
 // const testEmpty = [];
 // const testSingle = [1];
